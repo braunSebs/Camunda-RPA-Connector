@@ -1,4 +1,4 @@
-# Camunda RPA External Task Client
+# Camunda RPA External Task Client (Camunda 7)
 This project provides a functional Spring Boot application, which makes an External Task Client available that can delegate tasks to an RPA bot. With this External Client, the following actions can be triggered in UiPath:
 
 * Start a robot
