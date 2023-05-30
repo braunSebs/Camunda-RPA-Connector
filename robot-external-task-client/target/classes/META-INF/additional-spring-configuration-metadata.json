@@ -1,0 +1,77 @@
+{"properties": [
+  {
+    "name": "bridge.uipath.cloud.org",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.org'"
+  },
+  {
+    "name": "bridge.uipath.cloud.tenant",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.tenant'"
+  },
+  {
+    "name": "bridge.uipath.app-id",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.app-id'"
+  },
+  {
+    "name": "bridge.uipath.secret-app-key",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.secret-app-key'"
+  },
+  {
+    "name": "bridge.uipath.cloud.url",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.url'"
+  },
+  {
+    "name": "bridge.uipath.type",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.type'"
+  },
+  {
+    "name": "bridge.uipath.status-update-method",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.status-update-method'"
+  },
+  {
+    "name": "bridge.uipath.cloud.access-token-url",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.access-token-url'"
+  },
+  {
+    "name": "bridge.uipath.cloud.webhook",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.webhook'"
+  },
+  {
+    "name": "bridge.uipath.cloud.send.bridge-foldername",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.send.bridge-foldername'"
+  },
+  {
+    "name": "bridge.uipath.cloud.send.bridge-job-type",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.send.bridge-job-type'"
+  },
+  {
+    "name": "bridge.uipath.cloud.send.bridge-queue-name",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.send.bridge-queue-name'"
+  },
+  {
+    "name": "bridge.uipath.cloud.send.bridge-robot-name",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.send.bridge-robot-name'"
+  },
+  {
+    "name": "bridge.uipath.cloud.send.initiator",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.send.initiator'"
+  },
+  {
+    "name": "bridge.uipath.cloud.webhook-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'bridge.uipath.cloud.webhook-secret'"
+  }
+]}

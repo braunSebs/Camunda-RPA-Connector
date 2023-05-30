@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0r1rgh4" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:collaboration id="Collaboration_02fgu1k">
+    <bpmn:participant id="Participant_0f7kmtx" name="Camunda Process Application" processRef="StartRobotProcess" />
+    <bpmn:participant id="Participant_1bmwwia" name="RPA-Bridge" />
+    <bpmn:participant id="Participant_1e9u5ia" name="UiPath Orchestrator" />
+    <bpmn:messageFlow id="Flow_1pme851" name="Folder and Robot Id" sourceRef="StartRobotTask" targetRef="Participant_1bmwwia" />
+    <bpmn:messageFlow id="Flow_0d5zgdr" name="Status and output variables (Superhero Name)" sourceRef="Participant_1bmwwia" targetRef="StartRobotTask" />
+    <bpmn:messageFlow id="Flow_0jt7b7i" name="Folder and Queue" sourceRef="AdQueueRask" targetRef="Participant_1bmwwia" />
+    <bpmn:messageFlow id="Flow_1wj0ti4" name="Id Queue Item" sourceRef="Participant_1bmwwia" targetRef="AdQueueRask" />
+    <bpmn:messageFlow id="Flow_0bkitz7" name="Id Queue Item" sourceRef="Activity_1ommj68" targetRef="Participant_1bmwwia" />
+    <bpmn:messageFlow id="Flow_1ucqrg3" name="Status and output variables (lenght of Superhero Name)" sourceRef="Participant_1bmwwia" targetRef="Activity_1ommj68" />
+    <bpmn:messageFlow id="Flow_0xvhmoy" name="Inputs" sourceRef="Participant_1bmwwia" targetRef="Participant_1e9u5ia" />
+    <bpmn:messageFlow id="Flow_0tbfapg" name="Outputs" sourceRef="Participant_1e9u5ia" targetRef="Participant_1bmwwia" />
+  </bpmn:collaboration>
+  <bpmn:process id="StartRobotProcess" name="Start Robot" isExecutable="true">
+    <bpmn:extensionElements />
+    <bpmn:laneSet id="LaneSet_0t7rd39">
+      <bpmn:lane id="Lane_126ghtf" name="Automatic">
+        <bpmn:flowNodeRef>StartRobotTask</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>AdQueueRask</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_06c3ne3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_02drbol</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0r4o50k</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1ommj68</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1fxwcw2" name="User">
+        <bpmn:flowNodeRef>Activity_0qftl1z</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1i78jwo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0m26q9k</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:serviceTask id="StartRobotTask" name="Start Robot" camunda:type="external" camunda:topic="callRpaBridge">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="bridge_robotName">YourRobotName</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_folderName">YourFolderName</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_jobType">startRobot</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_vendor">uipath</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_17s3z9a</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uzlarc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="AdQueueRask" name="Add Queue Item" camunda:type="external" camunda:topic="callRpaBridge">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="bridge_jobType">addQueueItem</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_queueName">YourQueueName</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_folderName">YourFolderName</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_vendor">uipath</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_queueItemId" />
+          <camunda:outputParameter name="bridge_queueItemId">${bridge_queueItemId}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1t89hhe</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e7v5sb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_06c3ne3" name="Status Successful?" default="Flow_01qq1ro">
+      <bpmn:incoming>Flow_1kb251t</bpmn:incoming>
+      <bpmn:outgoing>Flow_10m7fb0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01qq1ro</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_02drbol">
+      <bpmn:incoming>Flow_0e7v5sb</bpmn:incoming>
+      <bpmn:incoming>Flow_01qq1ro</bpmn:incoming>
+      <bpmn:outgoing>Flow_1seofi1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateCatchEvent id="Event_0r4o50k" name="30 seconds">
+      <bpmn:incoming>Flow_1seofi1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bwqf4v</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1rgx1xu">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Activity_0qftl1z" name="Check Superhero Name">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="superheroName" label="Your Superhero Name" type="string">
+            <camunda:properties />
+            <camunda:validation />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1uzlarc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t89hhe</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1" name="RPA Task started" camunda:initiator="initiator">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="Name" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_17s3z9a</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1ommj68" name="Check Queue Item Status" camunda:type="external" camunda:topic="callRpaBridge">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="bridge_queueItemStatus" />
+          <camunda:inputParameter name="bridge_jobType">checkQueueItemStatus</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_vendor">uipath</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_folderName">YourFolderName</camunda:inputParameter>
+          <camunda:inputParameter name="bridge_queueItemId">${bridge_queueItemId}</camunda:inputParameter>
+          <camunda:outputParameter name="bridge_queueItemStatus">${bridge_queueItemStatus}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bwqf4v</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kb251t</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_1i78jwo" name="Check the length of your Superhero name">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="numberOfChars" label="Lenght of your Superhero Name" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_10m7fb0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0001wdz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0m26q9k" name="RPA Task completed">
+      <bpmn:incoming>Flow_0001wdz</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_17s3z9a" sourceRef="StartEvent_1" targetRef="StartRobotTask" />
+    <bpmn:sequenceFlow id="Flow_1uzlarc" sourceRef="StartRobotTask" targetRef="Activity_0qftl1z" />
+    <bpmn:sequenceFlow id="Flow_1t89hhe" sourceRef="Activity_0qftl1z" targetRef="AdQueueRask" />
+    <bpmn:sequenceFlow id="Flow_0e7v5sb" sourceRef="AdQueueRask" targetRef="Gateway_02drbol" />
+    <bpmn:sequenceFlow id="Flow_1kb251t" sourceRef="Activity_1ommj68" targetRef="Gateway_06c3ne3" />
+    <bpmn:sequenceFlow id="Flow_10m7fb0" name="Yes" sourceRef="Gateway_06c3ne3" targetRef="Activity_1i78jwo">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${bridge_queueItemStatus=='Successful'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_01qq1ro" name="No" sourceRef="Gateway_06c3ne3" targetRef="Gateway_02drbol" />
+    <bpmn:sequenceFlow id="Flow_1seofi1" sourceRef="Gateway_02drbol" targetRef="Event_0r4o50k" />
+    <bpmn:sequenceFlow id="Flow_0bwqf4v" sourceRef="Event_0r4o50k" targetRef="Activity_1ommj68" />
+    <bpmn:sequenceFlow id="Flow_0001wdz" sourceRef="Activity_1i78jwo" targetRef="Event_0m26q9k" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_02fgu1k">
+      <bpmndi:BPMNShape id="Participant_0f7kmtx_di" bpmnElement="Participant_0f7kmtx" isHorizontal="true">
+        <dc:Bounds x="160" y="340" width="1300" height="440" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1fxwcw2_di" bpmnElement="Lane_1fxwcw2" isHorizontal="true">
+        <dc:Bounds x="190" y="570" width="1270" height="210" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_126ghtf_di" bpmnElement="Lane_126ghtf" isHorizontal="true">
+        <dc:Bounds x="190" y="340" width="1270" height="230" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07kdhmq_di" bpmnElement="StartRobotTask">
+        <dc:Bounds x="370" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17jebtn_di" bpmnElement="AdQueueRask">
+        <dc:Bounds x="660" y="430" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_06c3ne3_di" bpmnElement="Gateway_06c3ne3" isMarkerVisible="true">
+        <dc:Bounds x="1165" y="445" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1225" y="456" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_02drbol_di" bpmnElement="Gateway_02drbol" isMarkerVisible="true">
+        <dc:Bounds x="805" y="445" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ntko1e_di" bpmnElement="Event_0r4o50k">
+        <dc:Bounds x="902" y="452" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="892" y="495" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j0rqlp_di" bpmnElement="Activity_0qftl1z">
+        <dc:Bounds x="510" y="640" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="262" y="672" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="239" y="715" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fyul75_di" bpmnElement="Activity_1ommj68">
+        <dc:Bounds x="1000" y="430" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ghhmjp_di" bpmnElement="Activity_1i78jwo">
+        <dc:Bounds x="1250" y="640" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0m26q9k_di" bpmnElement="Event_0m26q9k">
+        <dc:Bounds x="1392" y="662" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1385" y="705" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_17s3z9a_di" bpmnElement="Flow_17s3z9a">
+        <di:waypoint x="298" y="690" />
+        <di:waypoint x="334" y="690" />
+        <di:waypoint x="334" y="470" />
+        <di:waypoint x="370" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uzlarc_di" bpmnElement="Flow_1uzlarc">
+        <di:waypoint x="470" y="470" />
+        <di:waypoint x="490" y="470" />
+        <di:waypoint x="490" y="680" />
+        <di:waypoint x="510" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t89hhe_di" bpmnElement="Flow_1t89hhe">
+        <di:waypoint x="610" y="680" />
+        <di:waypoint x="635" y="680" />
+        <di:waypoint x="635" y="470" />
+        <di:waypoint x="660" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e7v5sb_di" bpmnElement="Flow_0e7v5sb">
+        <di:waypoint x="760" y="470" />
+        <di:waypoint x="805" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kb251t_di" bpmnElement="Flow_1kb251t">
+        <di:waypoint x="1100" y="470" />
+        <di:waypoint x="1165" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10m7fb0_di" bpmnElement="Flow_10m7fb0">
+        <di:waypoint x="1190" y="495" />
+        <di:waypoint x="1190" y="680" />
+        <di:waypoint x="1250" y="680" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1217" y="662" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01qq1ro_di" bpmnElement="Flow_01qq1ro">
+        <di:waypoint x="1190" y="445" />
+        <di:waypoint x="1190" y="370" />
+        <di:waypoint x="830" y="370" />
+        <di:waypoint x="830" y="445" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1202" y="403" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1seofi1_di" bpmnElement="Flow_1seofi1">
+        <di:waypoint x="855" y="470" />
+        <di:waypoint x="902" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bwqf4v_di" bpmnElement="Flow_0bwqf4v">
+        <di:waypoint x="938" y="470" />
+        <di:waypoint x="1000" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0001wdz_di" bpmnElement="Flow_0001wdz">
+        <di:waypoint x="1350" y="680" />
+        <di:waypoint x="1392" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_16qkf3d_di" bpmnElement="Participant_1bmwwia" isHorizontal="true" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+        <dc:Bounds x="160" y="190" width="1300" height="60" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0reoopv" bpmnElement="Participant_1e9u5ia" isHorizontal="true" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="160" y="80" width="1300" height="60" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1pme851_di" bpmnElement="Flow_1pme851" bioc:stroke="#6b3c00" color:border-color="#6b3c00">
+        <di:waypoint x="400" y="430" />
+        <di:waypoint x="400" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="297" y="275" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d5zgdr_di" bpmnElement="Flow_0d5zgdr" bioc:stroke="#831311" color:border-color="#831311">
+        <di:waypoint x="440" y="250" />
+        <di:waypoint x="440" y="430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="447" y="278" width="87" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jt7b7i_di" bpmnElement="Flow_0jt7b7i" bioc:stroke="#6b3c00" color:border-color="#6b3c00">
+        <di:waypoint x="690" y="430" />
+        <di:waypoint x="690" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="585" y="282" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wj0ti4_di" bpmnElement="Flow_1wj0ti4" bioc:stroke="#831311" color:border-color="#831311">
+        <di:waypoint x="730" y="250" />
+        <di:waypoint x="730" y="430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="745" y="282" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bkitz7_di" bpmnElement="Flow_0bkitz7" bioc:stroke="#6b3c00" color:border-color="#6b3c00">
+        <di:waypoint x="1030" y="430" />
+        <di:waypoint x="1030" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="955" y="282" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ucqrg3_di" bpmnElement="Flow_1ucqrg3" bioc:stroke="#831311" color:border-color="#831311">
+        <di:waypoint x="1080" y="250" />
+        <di:waypoint x="1080" y="430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1086" y="275" width="87" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xvhmoy_di" bpmnElement="Flow_0xvhmoy" bioc:stroke="#205022" color:border-color="#205022">
+        <di:waypoint x="540" y="190" />
+        <di:waypoint x="540" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="555" y="162" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tbfapg_di" bpmnElement="Flow_0tbfapg" bioc:stroke="#6b3c00" color:border-color="#6b3c00">
+        <di:waypoint x="1000" y="140" />
+        <di:waypoint x="1000" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1013" y="162" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
