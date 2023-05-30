@@ -5,7 +5,7 @@ This project provides a functional Spring Boot application, which makes an Exter
 * Create a queue item
 * Check the status of a queue item
 
-This project is a proof of concept (POC) that demonstrates specific functionalities and capabilities. To provide a detailed explanation of the project and its functions, here is a video that explains the features (youtube.com).
+This project is a proof of concept (POC) that demonstrates specific functionalities and capabilities. To provide a detailed explanation of the project and its functions, here is a video that explains the features ([youtube.com](https://youtu.be/i6RJ44CnzxE)).
 
 The POC project showcases the core ideas and feasibility of the proposed solution. It serves as a prototype to validate the concept and gather feedback before proceeding with full-scale development.
 
@@ -148,7 +148,7 @@ To check the status of a queue item, this task can be created. In this example, 
 * bridge_queueItemStatus: The status that was queried is returned by the application.
 
 ## Developer instrurctions
-This is a Camunda external task that allows you to perform actions in UiPath. The application is designed to be extensible, enabling the addition of more providers. Feel free to clone the project and customize it to fit your needs. Here is a video providing a tour of the code (youtube.com).
+This is a Camunda external task that allows you to perform actions in UiPath. The application is designed to be extensible, enabling the addition of more providers. Feel free to clone the project and customize it to fit your needs. Here is a video providing a tour of the code ([youtube.com](https://youtu.be/5ELC7kXtGq4)).
 
 ### Found a Bug? 
 If you have come across a bug or issue, please leave a comment in the "Issues" section and help me make the project better.
